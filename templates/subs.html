@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard: Assinantes Autenticados</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <script>
+        $(document).ready(function(){
+            $("#searchInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("table tbody tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+
+                var visibleRows = $("table tbody tr:visible").length;
+                if (visibleRows === 0) {
+                    $("#noResultsMessage").removeClass("d-none");
+                } else {
+                    $("#noResultsMessage").addClass("d-none");
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="text-center">
+        <img src="https://static.wixstatic.com/media/ce2882_5d340816545e45b6927e4b4ca3204ae6~mv2_d_3738_3764_s_4_2.png/v1/fill/w_95,h_96,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/UP%204%20NET.png" class="img-fluid" alt="UPNET">
+	</div>
+    <div class="container mt-5">
+      <form action="/refresh" method="GET">
+        <h1>Dashboard: Assinantes Autenticados
+         <button class="btn btn-info" type="submit">
+	  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+  		<path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"></path>
+  		<path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"></path>
+	  </svg>
+	 </button>
+	</h1>
+	</form>
+	<div class="input-group mb-3">
+        <a href="/">
+         <span class="input-group-text" id="basic-addon1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-90deg-up" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M4.854 1.146a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L4 2.707V12.5A2.5 2.5 0 0 0 6.5 15h8a.5.5 0 0 0 0-1h-8A1.5 1.5 0 0 1 5 12.5V2.707l3.146 3.147a.5.5 0 1 0 .708-.708l-4-4z"></path>
+          </svg>
+         </span>
+        </a>
+
+        <input type="text" id="searchInput" class="form-control mb-3" placeholder="Pesquise...">
+	
+        <div id="noResultsMessage" class="alert alert-info d-none">
+            Não foram encontradas ocorrências para sua pesquisa! Provavelmente o item pesquisado não existe ou não há usuários autenticados com essa Identificação ou VLAN.
+        </div>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Username</th>
+                    <th>Interface</th>
+                    <th>IP Address</th>
+                    <th>IPv6 Address</th>
+                    <th>MAC</th>
+                    <th>Vlan</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for device in devices %}
+                <tr>
+                    <td>{{ device.get('UserID', '') }}</td>
+                    <td>{{ device.get('Username', '') }}</td>
+                    <td>{{ device.get('Interface', '') }}</td>
+                    <td>{{ device.get('IPAddress', '') }}</td>
+                    <td>{{ device.get('IPv6Address', '') }}</td>
+                    <td>{{ device.get('MAC', '') }}</td>
+                    <td>{{ device.get('Vlan', '') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+

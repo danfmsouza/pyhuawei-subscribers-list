@@ -1,0 +1,12 @@
+#!/bin/bash
+pipx install flask
+
+
+# Instalando daemon de sistema
+cp -frauv $PWD/pyhuawei-daemon.service /etc/systemd/system/pyhuawei-daemon.service
+systemctl daemon-reload
+systemctl enable pyhuawei-daemon
+systemctl start pyhuawei-daemon
+systemctl status pyhuawei-daemon
+
+exit 0

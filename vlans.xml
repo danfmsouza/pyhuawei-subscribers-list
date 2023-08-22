@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Vlans>
+  <Vlan>
+    <Name>SP</Name>
+    <ID>11</ID>
+  </Vlan>
+  <Vlan>
+    <Name>RJ</Name>
+    <ID>21</ID>
+  </Vlan>
+  <Vlan>
+    <Name>BH</Name>
+    <ID>31</ID>
+  </Vlan>
+  <Vlan>
+    <Name>IPoE</Name>
+    <ID>400</ID>
+  </Vlan>
+</Vlans>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contagem de Usuários Por VLAN</title>
+    <!-- Adicione os links para os arquivos CSS do Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+	    <div class="text-center">
+        <img src="https://static.wixstatic.com/media/ce2882_5d340816545e45b6927e4b4ca3204ae6~mv2_d_3738_3764_s_4_2.png/v1/fill/w_95,h_96,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/UP%204%20NET.png" class="img-fluid" alt="UPNET">
+	    </div>
+    <div class="container mt-5">
+	<form action="/refresh" method="GET">
+        <h1 class="mb-4">Contagem de Usuários por VLAN
+	<button class="btn btn-info" type="submit">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"></path>
+  <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"></path>
+</svg></button>
+	</h1>
+	</form>
+
+	<div class="input-group mb-3">
+	<a href="/">
+         <span class="input-group-text" id="basic-addon1">
+	  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-90deg-up" viewBox="0 0 16 16">
+   	  <path fill-rule="evenodd" d="M4.854 1.146a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L4 2.707V12.5A2.5 2.5 0 0 0 6.5 15h8a.5.5 0 0 0 0-1h-8A1.5 1.5 0 0 1 5 12.5V2.707l3.146 3.147a.5.5 0 1 0 .708-.708l-4-4z"></path>
+  	  </svg>
+	 </span>
+	</a> 
+            <input type="text" id="searchInput" class="form-control" placeholder="Pesquise uma VLAN">
+        </div>
+
+	<table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Interface</th>
+                    <th scope="col">VLAN</th>
+                    <th scope="col">Assinantes Online</th>
+                </tr>
+            </thead>
+	    <tbody id="searchTableBody">
+    {% for vlan, data in vlan_count.items() %}
+    <tr>
+        <td>{{ data['interface'] }}</td>
+        <td>{{ vlan }}</td>
+        <td>{{ data['count'] }}</td>
+    </tr>
+    {% endfor %}
+            </tbody>
+        </table>
+        <p id="noResultsMsg" class="d-none text-danger alert alert-info d-none">
+	Não foram encontradas ocorrências para a <b>VLAN</b> pesquisada! Provavelmente esta <b>VLAN</b> pesquisada <b>não existe ou não há usuários</b> autenticados nela.</p>
+    	</div>
+
+    <!-- Adicione os links para os arquivos JavaScript do Bootstrap e o jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Adicione o filtro de busca em tempo real
+        $(document).ready(function () {
+            $("#searchInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                var found = false;
+                $("#searchTableBody tr").filter(function () {
+                    var text = $(this).text().toLowerCase();
+                    var match = text.indexOf(value) > -1;
+                    $(this).toggle(match);
+                    if (match) {
+                        found = true;
+                    }
+                });
+                $("#noResultsMsg").toggleClass("d-none", found);
+            });
+        });
+    </script>
+</body>
+</html>
+
